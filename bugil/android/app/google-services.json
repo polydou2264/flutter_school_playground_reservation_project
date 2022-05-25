@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "207875424703",
+    "project_id": "flutter-playground-reservation",
+    "storage_bucket": "flutter-playground-reservation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207875424703:android:e21faf7a2e49acb15ee10a",
+        "android_client_info": {
+          "package_name": "com.polydou2264.bugil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207875424703-28k8gnt92he4luup9a4l00gv7v70jr5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpvHAqJvar1BXYWVATJmjWkdl4-f96bGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207875424703-28k8gnt92he4luup9a4l00gv7v70jr5u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "207875424703-ce3i6f6hlags62kjcar70vehoov3df8n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.polydou2264.bugil"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
