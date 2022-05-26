@@ -34,6 +34,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^1.17.0
+  firebase_auth: ^3.3.18
+  cloud_firestore: ^3.1.16
+  flutterfire_ui: ^0.4.1+1
+  get: ^4.6.5
+  table_calendar: ^3.0.5
+  ntp: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +63,14 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/bugillogo.jpg
+
+  fonts:
+    - family: SueseongDotum
+      fonts:
+        - asset: assets/SuseongDotum.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
