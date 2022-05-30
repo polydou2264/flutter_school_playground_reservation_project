@@ -21,6 +21,18 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.orange,
         title: Text('북일고 운동장 예약', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+
+              Icons.exit_to_app_sharp,
+              color: Colors.white,
+            ),
+            onPressed: (){
+              FirebaseAuth.instance.signOut();
+            },
+          )
+        ],
       ),
       body: Center(
         child: Row(
