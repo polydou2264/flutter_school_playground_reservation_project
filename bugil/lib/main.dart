@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get.dart';
-import 'chat_screen.dart';
+import 'package:bugil/timeset.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
@@ -68,7 +68,7 @@ class Authentication extends StatelessWidget {
             );
           };
 
-          return ChatScreen();
+          return timeset();
 
         }
     );

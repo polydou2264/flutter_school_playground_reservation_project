@@ -13,7 +13,7 @@ class _Basketball2State extends State<Basketball2> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('농구장2 예약', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
+        title: Text('농구장2 예약(점심)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
         actions: [
           IconButton(icon: Icon(

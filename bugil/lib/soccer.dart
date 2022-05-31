@@ -10,11 +10,12 @@ class soccer extends StatefulWidget {
 
 class _soccerState extends State<soccer> {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('운동장 예약', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
+        title: Text('운동장 예약(점심)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
         actions: [
           IconButton(icon: Icon(

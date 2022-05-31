@@ -1,25 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'baseketball1.dart';
-import 'basketball2.dart';
-import 'futsal.dart';
-import 'soccer.dart';
+import 'ba1_dn.dart';
+import 'ba2_dn.dart';
+import 'futsal_dn.dart';
+import 'package:bugil/sc_dn.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class dinnerScreen extends StatefulWidget {
+  const dinnerScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<dinnerScreen> createState() => _dinnerScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _dinnerScreenState extends State<dinnerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('운동장 예약(점심)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
+        title: Text('운동장 예약(저녁)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
         actions: [
           IconButton(
@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Basketball1()),
+                      MaterialPageRoute(builder: (context) => baDn1()),
                     );
                   },
                   child: Container(
@@ -71,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => futsal()),
+                      MaterialPageRoute(builder: (context) => futsalDn()),
                     );
                   },
                   child: Container(
@@ -109,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Basketball2()),
+                      MaterialPageRoute(builder: (context) => badn2()),
                     );
                   },
                   child: Container(
@@ -134,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => soccer()),
+                      MaterialPageRoute(builder: (context) => scdn()),
                     );
                   },
                   child: Container(
@@ -174,4 +174,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-

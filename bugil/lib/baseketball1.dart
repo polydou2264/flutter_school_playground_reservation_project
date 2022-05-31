@@ -28,16 +28,34 @@ class _Basketball1State extends State<Basketball1> {
 
   TextEditingController _eventController = TextEditingController();
 
-  @override
-  void initState() {
-    selectedEvents = {};
-    super.initState();
-  }
+  getData() async {
+    try {
+      var dateevent = await firestore.collection('ba1ln').get();
+      if(dateevent.docs.isNotEmpty){
+        for(var doc in dateevent.docs){
+          var time = DateTime.parse(doc['date']);
+          String event = doc['events'];
+          if(selectedEvents.containsKey(time)){
 
-  @override
-  void dispose(){
-    _eventController.dispose();
-    super.dispose();
+          } else {
+            selectedEvents[time] = [Event(title: event)];
+          }
+          print(selectedEvents);
+          _getEventsfromDay(time);
+          setState((){});
+        }
+      }
+    } catch (e){
+      AlertDialog(
+        title: Text('오류'),
+        content: Text('인터넷 연결을 확인해주세요'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("확인"))
+        ],
+      );
+    }
   }
 
   List<Event> _getEventsfromDay(DateTime date){
@@ -45,12 +63,29 @@ class _Basketball1State extends State<Basketball1> {
   }
 
 
+
+  @override
+  void initState() {
+    selectedEvents = {};
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    _eventController.dispose();
+
+    super.dispose();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('농구장1 예약', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
+        title: Text('농구장1 예약(점심)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
         actions: [
           IconButton(icon: Icon(
@@ -138,9 +173,18 @@ class _Basketball1State extends State<Basketball1> {
             builder: (context) =>
                 AlertDialog(
                   title: Text("예약하기"),
-                  content: TextFormField(
-                    controller: _eventController,
-                  ),
+                  content:
+                    TextFormField(
+                      controller: _eventController,
+                      decoration: InputDecoration(
+                        hintText: '예약 내용을 입력하세요',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.black)
+                        )
+                      ),
+                    ),
+                    //TextFormField(controller: _eventController,),
                   actions: [
                     TextButton(
                       child: Text("취소"),
@@ -148,15 +192,44 @@ class _Basketball1State extends State<Basketball1> {
                     ),
                     TextButton(
                       child: Text("확인"),
-                      onPressed: (){
+                      onPressed: () async {
                         if(_eventController.text.isEmpty){
                         } else {
                           if(selectedEvents[selectedDay]!=null){
-                            selectedEvents[selectedDay]?.add(Event(title: _eventController.text));
+                            await showDialog(
+                                context: context,
+                                builder: (context){
+                                  return AlertDialog(
+                                    title: Text("오류"),
+                                    content: Text("이미 예약된 날짜입니다."),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text("확인"))
+                                    ],
+                                  );
+                                }
+                            );
+                            //selectedEvents[selectedDay]?.add(Event(title: _eventController.text));
                           } else {
                             selectedEvents[selectedDay] = [
-                              Event(title: _eventController.text)
-                            ];
+                              Event(title: _eventController.text) ];
+                            try{
+
+                              var date_a = await  firestore.collection('ba1ln').add({'date': selectedDay.toString(), 'events': _eventController.text});
+                              getData();
+
+                            } catch (e) {
+                              AlertDialog(
+                                title: Text('오류'),
+                                content: Text('인터넷 연결을 확인해주세요'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("확인"))
+                                ],
+                              );
+                            }
                           }
                         }
                         Navigator.pop(context);
@@ -175,6 +248,8 @@ class _Basketball1State extends State<Basketball1> {
     );
   }
 }
+
+
 
 
 

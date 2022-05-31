@@ -14,7 +14,7 @@ class _futsalState extends State<futsal> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('풋살장 예약', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
+        title: Text('풋살장 예약(점심)', style: TextStyle(fontFamily: 'SueseongDotum', fontSize: 27),),
         centerTitle: true,
         actions: [
           IconButton(icon: Icon(
