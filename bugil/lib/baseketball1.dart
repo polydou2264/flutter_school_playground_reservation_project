@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+
+final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
 class Event {
@@ -22,6 +25,8 @@ class Basketball1 extends StatefulWidget {
 
 class _Basketball1State extends State<Basketball1> {
 
+  late Map<DateTime, String> deletUid = {};
+  late Map<DateTime, String> docID = {};
   late Map<DateTime, List<Event>> selectedEvents;
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
@@ -30,31 +35,37 @@ class _Basketball1State extends State<Basketball1> {
 
   getData() async {
     try {
+      docID = {};
+      deletUid = {};
+      selectedEvents = {};
       var dateevent = await firestore.collection('ba1ln').get();
       if(dateevent.docs.isNotEmpty){
         for(var doc in dateevent.docs){
           var time = DateTime.parse(doc['date']);
           String event = doc['events'];
+          String uid = doc['uid'];
           if(selectedEvents.containsKey(time)){
-
           } else {
             selectedEvents[time] = [Event(title: event)];
+            deletUid[time] = uid.toString();
+            docID[time] = doc.id.toString();
           }
-          print(selectedEvents);
           _getEventsfromDay(time);
           setState((){});
         }
       }
     } catch (e){
-      AlertDialog(
-        title: Text('오류'),
-        content: Text('인터넷 연결을 확인해주세요'),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("확인"))
-        ],
-      );
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('오류'),
+            content: Text('인터넷 연결을 확인해주세요'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("확인"))
+            ],
+          ));
     }
   }
 
@@ -164,7 +175,39 @@ class _Basketball1State extends State<Basketball1> {
 
           ),
         //ListTile(title:Text(event.title),))
-          ..._getEventsfromDay(selectedDay).map((Event event) => Card(elevation: 2, child: ListTile(title:Text(event.title), leading: Icon(Icons.calendar_today), trailing: IconButton(onPressed: (){print("object");}, icon: Icon(Icons.delete)),)),)
+          ..._getEventsfromDay(selectedDay).map((Event event) => Card(elevation: 2, child: ListTile(title:Text(event.title), leading: Icon(Icons.calendar_today), trailing: IconButton(onPressed: () async {
+            if (deletUid[selectedDay].toString() == auth.currentUser?.uid.toString()){
+              try {
+                await firestore.collection("ba1ln").doc(docID[selectedDay]).delete();
+                getData();
+                setState((){});
+              } catch (e){
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('오류'),
+                      content: Text('인터넷 연결을 확인해주세요'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text("확인"))
+                      ],
+                    ));
+              }
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('오류'),
+                    content: Text('본인이 예약한 날짜가 아닙니다'),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("확인"))
+                    ],
+                  ));
+            }
+          }, icon: Icon(Icons.delete)),)),)
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -172,7 +215,7 @@ class _Basketball1State extends State<Basketball1> {
             context: context,
             builder: (context) =>
                 AlertDialog(
-                  title: Text("예약하기"),
+                  title: Text("예약하기", style: TextStyle(fontWeight: FontWeight.bold),),
                   content:
                     TextFormField(
                       controller: _eventController,
@@ -212,23 +255,24 @@ class _Basketball1State extends State<Basketball1> {
                             );
                             //selectedEvents[selectedDay]?.add(Event(title: _eventController.text));
                           } else {
-                            selectedEvents[selectedDay] = [
-                              Event(title: _eventController.text) ];
+                            selectedEvents[selectedDay] = [Event(title: _eventController.text) ];
                             try{
-
-                              var date_a = await  firestore.collection('ba1ln').add({'date': selectedDay.toString(), 'events': _eventController.text});
+                              await firestore.collection('ba1ln').add({'date': selectedDay.toString(), 'events': _eventController.text, 'uid': auth.currentUser?.uid});
                               getData();
+                              print('dddddd');
 
                             } catch (e) {
-                              AlertDialog(
-                                title: Text('오류'),
-                                content: Text('인터넷 연결을 확인해주세요'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text("확인"))
-                                ],
-                              );
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('오류'),
+                                    content: Text('인터넷 연결을 확인해주세요'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text("확인"))
+                                    ],
+                                  ));
                             }
                           }
                         }
